@@ -27,3 +27,11 @@
   width: 64px;
   height: 64px;
 }
+
+.field-invalid {
+  border: 1px solid red;
+}
+
+.input:focus, .username:focus {
+  outline: none;
+}

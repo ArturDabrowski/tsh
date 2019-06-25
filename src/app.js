@@ -2,14 +2,17 @@ import './assets/scss/app.scss';
 import $ from 'cash-dom';
 import { polyfill } from 'es6-promise'
 import 'isomorphic-fetch';
+import { validator } from './validator';
 
 export class App {
   initializeApp() {
     polyfill();
     let self = this;
-
+    
     $('.load-username').on('click', () => {
       let userName = $('.username.input').val();
+      // validator(userName);
+      if (validator(userName) === 'Not valid') return;
 
       fetch(`https://api.github.com/users/${userName}`)
         .then(response=> response.json())
