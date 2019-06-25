@@ -1,23 +1,23 @@
 import './assets/scss/app.scss';
 import $ from 'cash-dom';
-
+import { polyfill } from 'es6-promise'
+import 'isomorphic-fetch';
 
 export class App {
   initializeApp() {
+    polyfill();
     let self = this;
 
-    $('.load-username').on('click', function (e) {
+    $('.load-username').on('click', () => {
       let userName = $('.username.input').val();
 
-      fetch('https://api.github.com/users/' + userName)
-        .then((response)=> {response.json})
-        .then(function (body) {
-          self.profile = body;
+      fetch(`https://api.github.com/users/${userName}`)
+        .then(response=> response.json())
+        .then(response => {
+          self.profile = response;
           self.update_profile();
         })
-
     })
-
   }
 
   update_profile() {
