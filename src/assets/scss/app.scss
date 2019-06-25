@@ -17,3 +17,13 @@
 .timeline .timeline-item {
   padding-bottom:1em;
 }
+
+.timeline-content .content {
+  display: flex;
+}
+
+.content-avatar {
+  margin-right: 10px;
+  width: 64px;
+  height: 64px;
+}
