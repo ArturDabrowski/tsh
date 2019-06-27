@@ -4,6 +4,7 @@ import { polyfill } from 'es6-promise'
 import 'isomorphic-fetch';
 import { validator } from './utils/validator';
 import HistoryListElement from './components/history';
+import ProfileInformation from './components/profile';
 
 const eventTypes = [
 	'PullRequestEvent',
@@ -20,41 +21,53 @@ export class App {
 
       if (validator(userName) === 'Not valid') return;
 
-      $('.timeline-item').remove();
+      $('.events-container').empty();
+      $('.profile-container').empty();
       $('.loader').removeClass('is-hidden');
 
       fetch(`https://api.github.com/users/${userName}`)
-        .then(userResponse => userResponse.json())
-        .catch(error => console.error('Error:', error))
         .then(userResponse => {
-          self.update_profile(userResponse);
+          if(userResponse.ok) {
+            return userResponse.json();
+          }
+          $('.loader').addClass('is-hidden');
+          $('.profile-container').prepend('<h2 class="subtitle is-4">No such profile</h2>');
+          throw new Error('Network response was not ok.');
+        })
+        .then(userResponse => {
+          self.update_profile(userResponse)
           return fetch(`https://api.github.com/users/${userName}/events/public`)
         })
-        .then(eventsResponse => eventsResponse.json())
-        .catch(error => console.error('Error:', error))
         .then(eventsResponse => {
-          self.update_history(eventsResponse)
+          if(eventsResponse.ok) {
+            return eventsResponse.json();
+          }
+          $('.loader').addClass('is-hidden');
+          throw new Error('Network response was not ok.');
+        })
+        .then(eventsResponse => {
+          eventsResponse.length > 0 && self.update_history(eventsResponse)
           $('.loader').addClass('is-hidden');
         })
-    })
+        .catch(error => console.error('Error:', error));
+      })
 
-    $('.timeline').on('click', '.timeline-marker, .timeline-item', function() {
-      $(this).parent().find('.timeline-item, .timeline-marker').removeClass('is-primary')
-      $(this).addClass('is-primary')
-      $(this).children().addClass('is-primary')
-    })
+    $('.events-container').on('click', '.timeline-marker, .timeline-item', function() {
+      $(this).parent().find('.timeline-item, .timeline-marker').removeClass('is-primary');
+      $(this).addClass('is-primary');
+      $(this).children().addClass('is-primary');
+    });
   }
 
   update_profile(profile) {
-    $('#profile-name').text($('.username.input').val())
-    $('#profile-image').attr('src', profile.avatar_url)
-    $('#profile-url').attr('href', profile.html_url).text(profile.login)
-    $('#profile-bio').text(profile.bio || '(no information)')
+    $('.profile-container').append(ProfileInformation(profile));
   }
 
   update_history(events) {
-    $('#user-timeline').append(events.filter(event => eventTypes
+    $('.events-container').prepend('<h2 class="subtitle is-4">History</h2>');
+    $('.events-container').append('<div class="timeline"></div>');
+    $('.timeline').append(events.filter(event => eventTypes
         .some(eventType => eventType === event.type))
-        .map(HistoryListElement))
+        .map(HistoryListElement));
   }
 }
