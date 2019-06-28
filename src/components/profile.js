@@ -1,10 +1,10 @@
 const ProfileInformation = (profile) => {
 	const {
-		avatar_url, 
-		name, 
+		avatar_url,
+		name,
 		html_url,
-		login, 
-		bio, 
+		login,
+		bio,
 	} = profile;
 	return `<div class="profile">
 					<h2 class="subtitle is-4">Profile</h2>
