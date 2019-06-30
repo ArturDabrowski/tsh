@@ -90,8 +90,7 @@ const config = {
     open: true
   },
 
-  devtool: 'inline-source-map'
-
+  devtool: 'source-map'
 };
 
 module.exports = config;
