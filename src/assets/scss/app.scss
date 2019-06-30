@@ -1,0 +1,53 @@
+@import "~bulma";
+@import "~bulma-timeline";
+
+
+.navbar {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 8px;
+}
+
+.container {
+  padding: 10px;
+}
+
+.profile-container{
+  width: 100%;
+  @media all and (min-width: 768px) {
+    width: 50%;
+  }
+  @media all and (min-width: 1280px) {
+    width: 30%;
+  }
+}
+
+.gh-username img{
+  width: 32px;
+}
+
+#profile-bio{
+  margin-top:10px;
+}
+
+.timeline .timeline-item {
+  padding-bottom:1em;
+}
+
+.timeline-content .content {
+  display: flex;
+}
+
+.content-avatar {
+  margin-right: 10px;
+  width: 64px;
+  height: 64px;
+}
+
+.field-invalid {
+  border: 1px solid red;
+}
+
+.input:focus {
+  box-shadow: none;
+  border-color: #b5b5b5;
+}

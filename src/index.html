@@ -1,0 +1,36 @@
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" name="viewport" content="width=device-width">
+  <title>Github-browser</title>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-brand">
+    <div class="navbar-item">
+      <div class="field has-addons">
+        <div class="control">
+          <input class="input username" type="text" placeholder="enter github username">
+        </div>
+        <div class="control">
+          <button class="button is-info load-username">
+            Load
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="navbar-item">
+      <div class="loader is-hidden" id="spinner"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="columns is-1-tablet">
+    <div class="profile-container column"></div>
+    <div class="events-container column"></div>
+  </div>
+</div>
+
+</body>
+</html>
