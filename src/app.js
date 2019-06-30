@@ -16,41 +16,12 @@ export class App {
     polyfill();
     let self = this;
     
-    $('.load-username').on('click', () => {
-      let userName = $('.username.input').val();
-
-      if (validator(userName) === 'Not valid') return;
-
-      $('.events-container').empty();
-      $('.profile-container').empty();
-      $('.loader').removeClass('is-hidden');
-
-      fetch(`https://api.github.com/users/${userName}`)
-        .then(userResponse => {
-          if(userResponse.ok) {
-            return userResponse.json();
-          }
-          $('.loader').addClass('is-hidden');
-          $('.profile-container').prepend('<h2 class="subtitle is-4">No such profile</h2>');
-          throw new Error('Network response was not ok.');
-        })
-        .then(userResponse => {
-          self.update_profile(userResponse)
-          return fetch(`https://api.github.com/users/${userName}/events/public`)
-        })
-        .then(eventsResponse => {
-          if(eventsResponse.ok) {
-            return eventsResponse.json();
-          }
-          $('.loader').addClass('is-hidden');
-          throw new Error('Network response was not ok.');
-        })
-        .then(eventsResponse => {
-          eventsResponse.length > 0 && self.update_history(eventsResponse)
-          $('.loader').addClass('is-hidden');
-        })
-        .catch(error => console.error('Error:', error));
-      })
+    $('.load-username').on('click', () => self.onSearchProfile(self));
+    $('.username.input').on('keypress', (e) => {
+      if(e.which == 13) {
+        self.onSearchProfile(self);
+      }
+    });
 
     $('.events-container').on('click', '.timeline-marker, .timeline-item', function() {
       $(this).parent().find('.timeline-item, .timeline-marker').removeClass('is-primary');
@@ -58,6 +29,44 @@ export class App {
       $(this).children().addClass('is-primary');
     });
   }
+
+  onSearchProfile(self) {
+    let userName = $('.username.input').val();
+
+    if (validator(userName)) {
+      $('.username.input').addClass('field-invalid');
+      return;
+    }
+    $('.username.input').removeClass('field-invalid');
+
+    $('.events-container').empty();
+    $('.profile-container').empty();
+    $('.loader').removeClass('is-hidden');
+
+    fetch(`https://api.github.com/users/${userName}`)
+      .then(userResponse => {
+        if(userResponse.ok) {
+          return userResponse.json();
+        }
+        $('.profile-container').prepend('<h2 class="subtitle is-4">No such profile</h2>');
+        throw new Error('Network response was not ok.');
+      })
+      .then(userResponse => {
+        self.update_profile(userResponse)
+        return fetch(`https://api.github.com/users/${userName}/events/public`)
+      })
+      .then(eventsResponse => {
+        if(eventsResponse.ok) {
+          return eventsResponse.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(eventsResponse => {
+        eventsResponse.length > 0 && self.update_history(eventsResponse)
+      })
+      .catch(error => console.error('Error:', error))
+      .finally(() => $('.loader').addClass('is-hidden'))
+    }
 
   update_profile(profile) {
     $('.profile-container').append(ProfileInformation(profile));

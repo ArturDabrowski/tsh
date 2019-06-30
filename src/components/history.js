@@ -18,12 +18,12 @@ const HistoryListElement = (events) => {
 								</div>
 								<div class="content-text">
 									<span class="gh-username">
-										<a href="https://github.com/simonsipl">${actor.display_login}</a>
+										<a href="https://github.com/${actor.login}">${actor.display_login}</a>
 									</span>
 									${payload.action}
 									<a href="${payload.pull_request.html_url}">${type}</a>
 									<p class="repo-name">
-										<a href="${repo.url}">${repo.name}</a>
+										<a href="https://github.com/${repo.name}">${repo.name}</a>
 									</p>
 								</div>
 							</div>
