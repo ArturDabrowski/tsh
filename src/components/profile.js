@@ -1,13 +1,7 @@
-const ProfileInformation = (profile) => {
-	const {
-		avatar_url,
-		name,
-		html_url,
-		login,
-		bio,
-	} = profile;
-	return `<div class="profile">
-					<h2 class="subtitle is-4">Profile</h2>
+const ProfileInformation = profile => {
+  const { avatar_url, name, html_url, login, bio } = profile
+  return `<div class="profile">
+						<h2 class="subtitle is-4">Profile</h2>
 						<div class="media">
 							<div class="media-left">
 								<figure class="media-left image is-64x64">
@@ -23,7 +17,7 @@ const ProfileInformation = (profile) => {
 							<p>${bio || '(no information)'}
 							</p>
 						</div>
-					</div>`;
+					</div>`
 }
 
-export default ProfileInformation;
+export default ProfileInformation

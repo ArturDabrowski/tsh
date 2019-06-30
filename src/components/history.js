@@ -1,14 +1,8 @@
-import { getFormattedDate } from '../utils/dateFormatter';
+import { getFormattedDate } from '../utils/dateFormatter'
 
-const HistoryListElement = (events) => {
-	const {
-		created_at, 
-		actor, 
-		payload, 
-		type, 
-		repo,
-	} = events;
-	return `<div class="timeline-item">
+const HistoryListElement = events => {
+  const { created_at, actor, payload, type, repo } = events
+  return `<div class="timeline-item">
 						<div class="timeline-marker"></div>
 						<div class="timeline-content">
 							<p class="heading">${getFormattedDate(created_at)}</p>
@@ -28,7 +22,7 @@ const HistoryListElement = (events) => {
 								</div>
 							</div>
 						</div>
-					</div>`;
+					</div>`
 }
 
-export default HistoryListElement;
+export default HistoryListElement
